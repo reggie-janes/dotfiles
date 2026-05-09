@@ -27,7 +27,11 @@ fi
 mkdir -p ~/.claude/commands
 cp -f  "$DIR/claude/settings.json" ~/.claude/settings.json
 cp -f  "$DIR/claude/CLAUDE.md"     ~/.claude/CLAUDE.md
-cp -rf "$DIR/claude/commands/."    ~/.claude/commands/
+
+# Copy slash commands if any exist in dotfiles.
+if [ -d "$DIR/claude/commands" ] && [ -n "$(ls -A "$DIR/claude/commands" 2>/dev/null)" ]; then
+    cp -rf "$DIR/claude/commands/." ~/.claude/commands/
+fi
 
 # --- Shell aliases ------------------------------------------------------------
 ALIAS_LINE="source $DIR/shell/aliases.sh"
