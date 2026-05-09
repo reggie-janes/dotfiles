@@ -17,7 +17,7 @@ fi
 # --- Personal VS Code extensions ---------------------------------------------
 # `code` is only on PATH inside a VS Code remote session; skip silently otherwise.
 if command -v code >/dev/null 2>&1; then
-    code --install-extension anthropics.claude-code --force
+    code --install-extension anthropic.claude-code --force
     code --install-extension vscode-icons-team.vscode-icons --force
 fi
 
