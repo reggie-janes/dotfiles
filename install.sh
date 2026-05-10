@@ -20,9 +20,9 @@ if command -v code >/dev/null 2>&1; then
     # The `code` shim appears on PATH before the VS Code server's IPC socket
     # is ready, so the first call can fail. Retry until it works; once it
     # does, subsequent calls don't need retries.
-    for i in 1 2 3 4 5; do
+    for i in $(seq 1 20); do
         code --install-extension anthropic.claude-code --force && break
-        sleep 2
+        sleep 1
     done
     code --install-extension vscode-icons-team.vscode-icons --force || true
 fi
