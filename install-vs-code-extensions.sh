@@ -8,7 +8,9 @@ set -exuo pipefail
 
 echo "install-vs-code-extensions.sh"
 
-code --install-extension anthropic.claude-code --force || true
-code --install-extension vscode-icons-team.vscode-icons --force || true
+fail=0
+code --install-extension anthropic.claude-code --force || fail=1
+code --install-extension vscode-icons-team.vscode-icons --force || fail=1
 
-echo "install-vs-code-extensions.sh done"
+echo "install-vs-code-extensions.sh done (fail=$fail)"
+exit $fail
