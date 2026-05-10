@@ -6,6 +6,12 @@ set -exuo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# --- Shell aliases ------------------------------------------------------------
+ALIAS_LINE="source $DIR/shell/aliases.sh"
+if ! grep -qxF "$ALIAS_LINE" ~/.bashrc 2>/dev/null; then
+    echo "$ALIAS_LINE" >> ~/.bashrc
+fi
+
 # --- Claude Code CLI ----------------------------------------------------------
 # The launcher at ~/.local/bin/claude is not in any persistent mount, so it's
 # lost on every rebuild and must be re-created. The named volume mount on
@@ -54,10 +60,5 @@ if [ ! -e "$PERSIST" ]; then
 fi
 ln -sfn "$PERSIST" "$LINK"
 
-# --- Shell aliases ------------------------------------------------------------
-ALIAS_LINE="source $DIR/shell/aliases.sh"
-if ! grep -qxF "$ALIAS_LINE" ~/.bashrc 2>/dev/null; then
-    echo "$ALIAS_LINE" >> ~/.bashrc
-fi
 
 echo "Dotfiles installed."
