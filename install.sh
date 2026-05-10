@@ -12,6 +12,14 @@ if ! grep -qxF "$ALIAS_LINE" ~/.bashrc 2>/dev/null; then
     echo "$ALIAS_LINE" >> ~/.bashrc
 fi
 
+# --- Auto-activate workspace venv --------------------------------------------
+# Without this, the VS Code Python extension activates the venv for us, but
+# only after a few seconds of delay per new terminal.
+VENV_LINE="source $DIR/shell/venv-autoactivate.sh"
+if ! grep -qxF "$VENV_LINE" ~/.bashrc 2>/dev/null; then
+    echo "$VENV_LINE" >> ~/.bashrc
+fi
+
 # --- Claude Code CLI ----------------------------------------------------------
 # The launcher at ~/.local/bin/claude is not in any persistent mount, so it's
 # lost on every rebuild and must be re-created. The named volume mount on
