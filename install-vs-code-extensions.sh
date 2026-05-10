@@ -7,7 +7,8 @@
 set -exuo pipefail
 
 echo "install-vs-code-extensions.sh"
-
+whoami
+pwd
 fail=0
 code --install-extension anthropic.claude-code --force || fail=1
 code --install-extension vscode-icons-team.vscode-icons --force || fail=1
