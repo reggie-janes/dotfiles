@@ -2,7 +2,7 @@
 # Personal dotfiles installer.
 # Runs inside the devcontainer after your editor clones the dotfiles repo.
 # Idempotent — safe to re-run.
-set -euo pipefail
+set -exuo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
