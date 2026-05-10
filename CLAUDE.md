@@ -44,9 +44,19 @@ In the user's devcontainers, `~/.claude/` is mounted as a named volume that surv
 
 ## What belongs here vs not
 
-**Belongs:** anything personal that should follow the developer into every devcontainer regardless of project — Claude Code, icon themes, shell aliases, personal git config snippets, a custom prompt, AI tool preferences.
+**Belongs:** anything personal that should follow the developer into every devcontainer regardless of project:
+* Claude Code, a custom prompt, AI tool preferences;
+* shell aliases;
+* personal git config snippets;
+* etc.
 
-**Does not belong:** anything project-specific. Python versions, project dependencies, language toolchains, project-required VS Code extensions all live in each project's `.devcontainer/`. The split is "what I personally like" vs "what this project needs"; this repo is strictly the first.
+Personal VS Code extensions must reside in `dev.containers.defaultExtensions` setting, 
+as they can't be installed from dotfiles.
+
+**Does not belong:** anything project-specific.  
+Python versions, project dependencies, language toolchains, 
+project-required VS Code extensions all live in each project's `.devcontainer/`.  
+The split is "what I personally like" vs "what this project needs"; this repo is strictly the first.
 
 ## Testing changes
 
@@ -79,7 +89,6 @@ For a true clean-slate test, rebuild the container ("Dev Containers: Rebuild Con
 - **Aliases not appearing after install:** the user's *currently open* shell already finished reading `.bashrc` before the source line was added. They need a new terminal or `source ~/.bashrc`. This is expected behavior; don't try to "fix" it in the script.
 - **`cp` failing on a missing source file:** use `[ -f "$src" ] && cp -f ...` rather than letting `set -e` abort the whole install. Optional configs should be optional.
 - **Empty directories:** git doesn't track them. If `install.sh` references a directory that's empty in normal use (e.g. `claude/commands/` for a user with no custom commands), guard the copy with an existence check.
-- **VS Code extension IDs are case-sensitive and publisher-specific.** Verify against the marketplace listing before adding `code --install-extension` lines; a wrong ID fails silently to the user beyond a one-line error.
 
 ## Conventions
 
