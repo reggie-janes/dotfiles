@@ -13,6 +13,5 @@
   },
   "model": "opus",
   "effortLevel": "xhigh",
-  "autoUpdatesChannel": "stable",
   "theme": "dark-ansi"
 }

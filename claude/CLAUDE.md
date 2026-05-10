@@ -1,4 +1,3 @@
-
 # General
 
 * Explain things, but not be too verbose until user asks a question.
