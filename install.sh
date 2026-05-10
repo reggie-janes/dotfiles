@@ -20,6 +20,12 @@ fi
 echo "Installing/refreshing Claude Code CLI..."
 curl -fsSL https://claude.ai/install.sh | bash
 
+# Note: personal VS Code extensions are NOT installed here.
+# Lifecycle scripts run without VSCODE_IPC_HOOK_CLI set, so `code` resolves
+# to a dummy fallback that only knows how to print "code or code-insiders is
+# not installed". Add personal extensions to the user-level VS Code setting
+# `dev.containers.defaultExtensions` instead — VS Code installs them itself.
+
 # --- Claude preferences -------------------------------------------------------
 # ~/.claude/ is a named volume in our devcontainers, so these copies refresh
 # the configs on every container creation while preserving session state.
