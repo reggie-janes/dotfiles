@@ -7,28 +7,12 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # --- Claude Code CLI ----------------------------------------------------------
-# Devcontainers that mount a named volume at ~/.local/share/claude/ will
-# preserve the installed binary across rebuilds, so this becomes a no-op on
-# subsequent rebuilds (the `command -v claude` check passes once the symlink
-# at ~/.local/bin/claude is restored — see the symlink-restore block below).
-if ! command -v claude >/dev/null 2>&1; then
-    # If a previous install survived in the named volume, restore the
-    # ~/.local/bin/claude symlink without re-running the network installer.
-    if [ -d "$HOME/.local/share/claude/versions" ]; then
-        LATEST=$(ls -1 "$HOME/.local/share/claude/versions" 2>/dev/null | sort -V | tail -n1 || true)
-        if [ -n "$LATEST" ] && [ -x "$HOME/.local/share/claude/versions/$LATEST" ]; then
-            mkdir -p "$HOME/.local/bin"
-            ln -sfn "$HOME/.local/share/claude/versions/$LATEST" "$HOME/.local/bin/claude"
-            echo "Restored Claude Code symlink → $LATEST"
-        fi
-    fi
-fi
-if ! command -v claude >/dev/null 2>&1; then
-    echo "Installing Claude Code CLI..."
-    curl -fsSL https://claude.ai/install.sh | bash
-else
-    echo "Claude Code CLI already present — skipping install."
-fi
+# The launcher at ~/.local/bin/claude is not in any persistent mount, so it's
+# lost on every rebuild and must be re-created. The named volume mount on
+# ~/.local/share/claude/ keeps the version downloads warm, so re-running the
+# installer is fast (it skips the download when the version is already cached).
+echo "Installing/refreshing Claude Code CLI..."
+curl -fsSL https://claude.ai/install.sh | bash
 
 # --- Personal VS Code extensions ---------------------------------------------
 # `code` is only on PATH inside a VS Code remote session; skip silently otherwise.
