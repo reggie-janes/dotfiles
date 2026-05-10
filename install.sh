@@ -17,8 +17,14 @@ curl -fsSL https://claude.ai/install.sh | bash
 # --- Personal VS Code extensions ---------------------------------------------
 # `code` is only on PATH inside a VS Code remote session; skip silently otherwise.
 if command -v code >/dev/null 2>&1; then
-    code --install-extension anthropic.claude-code --force
-    code --install-extension vscode-icons-team.vscode-icons --force
+    # The `code` shim appears on PATH before the VS Code server's IPC socket
+    # is ready, so the first call can fail. Retry until it works; once it
+    # does, subsequent calls don't need retries.
+    for i in 1 2 3 4 5; do
+        code --install-extension anthropic.claude-code --force && break
+        sleep 2
+    done
+    code --install-extension vscode-icons-team.vscode-icons --force || true
 fi
 
 # --- Claude preferences -------------------------------------------------------
